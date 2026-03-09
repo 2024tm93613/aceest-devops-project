@@ -1,14 +1,10 @@
-from flask import Flask, jsonify
+from flask import Flask
 
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return jsonify({"message": "Welcome to ACEest Fitness & Gym API"})
-
-@app.route("/members")
-def members():
-    return jsonify({"members": ["John", "Sara", "Mike"]})
+    return "ACEest DevOps Application - Version 1"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
