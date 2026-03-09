@@ -2,7 +2,7 @@ name: ACEest CI Pipeline
 
 on:
   push:
-  pull_request:
+  pull_request: 
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.10
+          python-version: '3.10'
 
       - name: Install Dependencies
         run: pip install -r requirements.txt
