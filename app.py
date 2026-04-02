@@ -1,21 +1,21 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-programs = ["Fat Loss", "Muscle Gain", "Beginner"]
-
 @app.route("/")
 def home():
-    return "ACEest DevOps Application v2"
+    return "ACEest DevOps Application v3"
 
-@app.route("/members")
-def members():
-    return jsonify({"members": ["Ramesh", "Suresh", "Mahesh", "John"]})
+@app.route("/generate", methods=["POST"])
+def generate():
+    data = request.json
+    name = data.get("name")
+    program = data.get("program")
 
-# NEW
-@app.route("/programs")
-def get_programs():
-    return jsonify({"programs": programs})
+    return jsonify({
+        "message": f"Plan generated for {name}",
+        "program": program
+    })
 
 if __name__ == "__main__":
     app.run(debug=True)
