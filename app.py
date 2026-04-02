@@ -5,6 +5,7 @@ app = Flask(__name__)
 
 programs = ["Fat Loss", "Muscle Gain", "Beginner"]
 
+
 def init_db():
     conn = sqlite3.connect("aceest.db")
     cur = conn.cursor()
