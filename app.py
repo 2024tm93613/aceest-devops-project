@@ -1,4 +1,7 @@
 from flask import Flask, jsonify, request
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
 
@@ -13,6 +16,7 @@ program_details = {
 
 @app.route("/")
 def home():
+    logging.info("Home endpoint called")
     return "Welcome to ACEest Fitness & Gym"
 
 @app.route("/members")
