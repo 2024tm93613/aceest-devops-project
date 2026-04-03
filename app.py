@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
@@ -32,6 +32,19 @@ def get_program(name):
         "program": name,
         "description": program_details[name]
     }
+
+@app.route("/programs", methods=["POST"])
+def add_program():
+    data = request.get_json()
+
+    name = data.get("name")
+
+    if not name:
+        return {"error": "Invalid input"}, 400
+
+    programs.append(name)
+
+    return {"message": "Program added"}, 201
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
