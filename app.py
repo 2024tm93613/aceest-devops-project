@@ -37,7 +37,14 @@ def get_program(name):
 def add_program():
     data = request.get_json()
 
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+
     name = data.get("name")
+
+    if not name:
+        return jsonify({"error": "Invalid input"}), 400
+
 
     if not name:
         return {"error": "Invalid input"}, 400
