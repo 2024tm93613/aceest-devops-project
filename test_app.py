@@ -10,3 +10,8 @@ def test_members():
     client = app.test_client()
     response = client.get("/members")
     assert response.status_code == 200
+
+def test_programs():
+    client = app.test_client()
+    response = client.get("/programs")
+    assert response.status_code == 200
