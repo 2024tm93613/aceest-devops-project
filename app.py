@@ -17,5 +17,26 @@ def members():
         ]
     })
 
+# ✅ NEW: Programs list (v4)
+@app.route("/programs")
+def programs():
+    return jsonify({
+        "programs": ["Yoga", "Cardio", "Strength Training"]
+    })
+
+# ✅ NEW: Program by name (v4)
+@app.route("/programs/<name>")
+def program_detail(name):
+    data = {
+        "Yoga": "Flexibility and relaxation",
+        "Cardio": "Heart and endurance training",
+        "Strength Training": "Muscle building"
+    }
+    return jsonify({
+        "program": name,
+        "description": data.get(name, "Program not found")
+    })
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
