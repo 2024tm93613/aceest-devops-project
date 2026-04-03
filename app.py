@@ -1,6 +1,9 @@
-from flask import Flask
+from flask import Flask, jsonify
 
 app = Flask(__name__)
+
+# ✅ define empty list
+members_list = []
 
 @app.route("/")
 def home():
