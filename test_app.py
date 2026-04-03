@@ -34,3 +34,17 @@ def test_add_program():
     )
 
     assert response.status_code == 201
+
+
+def test_add_program_invalid():
+    client = app.test_client()
+    response = client.post("/programs", json={})
+    assert response.status_code == 400
+
+
+def test_add_program_duplicate():
+    client = app.test_client()
+    client.post("/programs", json={"name": "Zumba"})
+
+    response = client.post("/programs", json={"name": "Zumba"})
+    assert response.status_code == 409

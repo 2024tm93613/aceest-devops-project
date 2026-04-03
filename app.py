@@ -48,6 +48,9 @@ def add_program():
 
     if not name:
         return {"error": "Invalid input"}, 400
+    
+    if name in programs:
+        return {"error": "Program exists"}, 409
 
     programs.append(name)
 
