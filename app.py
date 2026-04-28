@@ -6,7 +6,7 @@ logging.basicConfig(level=logging.INFO)
 app = Flask(__name__)
 
 # ✅ define empty list
-members_list = []
+members_list = ["RAmesh","Mahesh","Suresh"]
 programs = ["Yoga", "Cardio", "Strength"]
 program_details = {
     "Yoga": "Flexibility",
@@ -17,7 +17,11 @@ program_details = {
 @app.route("/")
 def home():
     logging.info("Home endpoint called")
-    return "Welcome to ACEest Fitness & Gym"
+    return jsonify({
+        "application": "ACEest Fitness & Gym",
+        "version": "v2(Green)",
+        "status": "running"
+    })
 
 @app.route("/members")
 def members():
