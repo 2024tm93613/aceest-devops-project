@@ -16,12 +16,23 @@ program_details = {
 
 @app.route("/")
 def home():
-    logging.info("Home endpoint called")
-    return jsonify({
-        "application": "ACEest Fitness & Gym",
-        "version": "v2(Canary)",
-        "status": "running"
-    })
+    return {
+        "message": "Use /v1 or /v2 for A/B testing"
+    }
+
+@app.route("/v1")
+def old_version():
+    return {
+        "version": "v1 :A/B TEST - OLD",
+        "message": "This is old version of A/B Testing"
+    }
+
+@app.route("/v2")
+def new_version():
+    return {
+        "version": "v2 :A/B TEST - NEW",
+        "message": "This is new version of A/B Testing"
+    }
 
 @app.route("/members")
 def members():
