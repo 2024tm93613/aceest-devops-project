@@ -19,7 +19,7 @@ def home():
     logging.info("Home endpoint called")
     return jsonify({
         "application": "ACEest Fitness & Gym",
-        "version": "v2(Green)",
+        "version": "v1(Current)",
         "status": "running"
     })
 

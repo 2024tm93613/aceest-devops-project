@@ -1,19 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fitness-app
+  name: fitness-blue
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: fitness
+      app: fitness-blue
   template:
     metadata:
       labels:
-        app: fitness
+        app: fitness-blue
     spec:
       containers:
       - name: fitness-container
-        image: 2024tm93613/aceest-gym-app:v1
+        image: 2024tm93613/aceest-gym-app:v1-blue
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
