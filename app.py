@@ -17,7 +17,7 @@ program_details = {
 @app.route("/")
 def home():
     return {
-        "message": "Use /v1 or /v2 for A/B testing"
+        "message": "Use /v1 or /v2 for A/B testing-with CI/CD pipeline"
     }
 
 @app.route("/v1")
