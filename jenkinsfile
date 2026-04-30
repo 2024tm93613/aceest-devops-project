@@ -1,36 +1,64 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "2024tm93613/aceest-gym-app"
+        TAG = "v${BUILD_NUMBER}"
+    }
+
     stages {
 
-        stage('Clone') {
+        stage('Install Dependencies') {
             steps {
-                git 'https://github.com/2024tm93613/aceest-devops-project'
+                sh '''
+                echo Installing dependencies
+                python -m pip install --upgrade pip
+                python -m pip install -r requirements.txt
+                '''
             }
         }
 
-        stage('Build Docker') {
+        stage('Run Tests') {
             steps {
-                sh 'docker build -t aceest-app .'
+                sh '''
+                echo Running tests
+                python -m pytest
+                '''
             }
         }
 
-        stage('Test') {
+        stage('SonarQube Analysis') {
             steps {
-                sh 'pytest || true'
+                withSonarQubeEnv('SonarQube') {
+                    sh 'sonar-scanner'
+                }
             }
         }
 
-        stage('Push Image') {
+        stage('Build Docker Image') {
             steps {
-                sh 'docker tag aceest-app 2024tm93613/aceest-devops-app:jenkins'
-                sh 'docker push 2024tm93613/aceest-devops-app:jenkins'
+                sh '''
+                echo Building Docker image
+                docker build -t $IMAGE_NAME:$TAG .
+                '''
             }
         }
 
-        stage('Deploy') {
+        stage('Push Docker Image') {
             steps {
-                sh 'kubectl apply -f k8s/'
+                sh '''
+                echo Pushing image to Docker Hub
+                docker push $IMAGE_NAME:$TAG
+                '''
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh '''
+                echo Deploying to Kubernetes
+                kubectl set image deployment/fitness-green fitness-container=$IMAGE_NAME:$TAG
+                '''
             }
         }
     }
