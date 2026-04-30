@@ -36,6 +36,21 @@ pipeline {
             }
         }
 
+        stage('Docker Login') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-hub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    bat '''
+                    echo Logging into Docker Hub
+                    echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+                    '''
+                }
+            }
+        }
+
         stage('Push Docker Image') {
             steps {
                 bat '''
@@ -47,11 +62,6 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'docker-hub-creds',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )])
                 bat '''
                 echo Deploying
                 kubectl set image deployment/fitness-green fitness-container=%IMAGE_NAME%:%TAG%
