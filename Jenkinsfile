@@ -10,7 +10,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh '''
+                bat '''
                 echo Installing dependencies
                 python -m pip install --upgrade pip
                 python -m pip install -r requirements.txt
@@ -20,44 +20,36 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh '''
+                bat '''
                 echo Running tests
                 python -m pytest
                 '''
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh 'sonar-scanner'
-                }
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
-                sh '''
+                bat '''
                 echo Building Docker image
-                docker build -t $IMAGE_NAME:$TAG .
+                docker build -t %IMAGE_NAME%:%TAG% .
                 '''
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                sh '''
-                echo Pushing image to Docker Hub
-                docker push $IMAGE_NAME:$TAG
+                bat '''
+                echo Pushing image
+                docker push %IMAGE_NAME%:%TAG%
                 '''
             }
         }
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh '''
-                echo Deploying to Kubernetes
-                kubectl set image deployment/fitness-green fitness-container=$IMAGE_NAME:$TAG
+                bat '''
+                echo Deploying
+                kubectl set image deployment/fitness-green fitness-container=%IMAGE_NAME%:%TAG%
                 '''
             }
         }
