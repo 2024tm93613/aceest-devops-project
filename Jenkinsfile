@@ -46,12 +46,12 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
-                withCredentials([usernamePassword(
-                credentialsId: 'docker-hub-creds',
-                usernameVariable: '2024tm93613',
-                passwordVariable: 'Rajit@2512'
-            )])
             steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-hub-creds',
+                    usernameVariable: '2024tm93613',
+                    passwordVariable: 'Rajit@2512'
+                )])
                 bat '''
                 echo Deploying
                 kubectl set image deployment/fitness-green fitness-container=%IMAGE_NAME%:%TAG%
