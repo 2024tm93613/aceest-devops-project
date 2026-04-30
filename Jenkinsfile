@@ -36,6 +36,44 @@ pipeline {
             }
         }
 
+                // ✅ Run tests INSIDE container
+        stage('Run Tests in Container') {
+            steps {
+                bat '''
+                echo Running tests inside container
+
+                docker run --rm %IMAGE_NAME%:%TAG% python -m pytest
+                '''
+            }
+        }
+
+        // ✅ SonarQube Analysis
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('%SONARQUBE_ENV%') {
+                    bat '''
+                    echo Running SonarQube scan
+
+                    sonar-scanner ^
+                    -Dsonar.projectKey=aceest-fitness ^
+                    -Dsonar.sources=. ^
+                    -Dsonar.host.url=http://localhost:9000 ^
+                    -Dsonar.login=%SONAR_AUTH_TOKEN%
+                    '''
+                }
+            }
+        }
+
+        // ✅ Quality Gate (FAIL pipeline if bad code)
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
+
         stage('Docker Login') {
             steps {
                 withCredentials([usernamePassword(
