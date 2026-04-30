@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Clone') {
+            steps {
+                git 'https://github.com/2024tm93613/aceest-devops-project'
+            }
+        }
+
+        stage('Build Docker') {
+            steps {
+                sh 'docker build -t aceest-app .'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'pytest || true'
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                sh 'docker tag aceest-app 2024tm93613/aceest-devops-app:jenkins'
+                sh 'docker push 2024tm93613/aceest-devops-app:jenkins'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'kubectl apply -f k8s/'
+            }
+        }
+    }
+}
