@@ -46,6 +46,11 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
+                withCredentials([usernamePassword(
+                credentialsId: 'docker-hub-creds',
+                usernameVariable: '2024tm93613',
+                passwordVariable: 'Rajit@2512'
+            )])
             steps {
                 bat '''
                 echo Deploying
