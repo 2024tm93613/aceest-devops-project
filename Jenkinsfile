@@ -61,7 +61,7 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
-            steps {
+            steps {    
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
                     bat '''
                     echo Deploying to Kubernetes
@@ -71,6 +71,7 @@ pipeline {
 
                     kubectl set image deployment/fitness-green fitness-container=%IMAGE_NAME%:%TAG%
                     '''
+                }
             }
         }
     }
