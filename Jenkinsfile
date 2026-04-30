@@ -49,8 +49,8 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'docker-hub-creds',
-                    usernameVariable: '2024tm93613',
-                    passwordVariable: 'Rajit@2512'
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
                 )])
                 bat '''
                 echo Deploying
